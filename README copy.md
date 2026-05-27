@@ -1,5 +1,7 @@
 ODD - Protokoll Fischerei und Allmende
 
+
+
 ## 1. Purpose and Patterns
 Das Ziel dieses Modelles ist es, die Dynamik der gemeinschaftlichen Nutzen Ressourcen anhand des Beispiels eines Fischbestandes in einem See darzustellen. Hierbei gibt es zwei zentrale Perspektiven, die genauer betrachtet werden. Der erste Ansatz bezieht sich auf die zwangsläufige Übernutzung und Zerstörung der gemeinsam genutzten Ressourcen und der andere Ansatz soll zeigen, dass durch Regeln, an welche sich die Gemeinschaft hält, ein gemeinschaftlicher Nutzen möglich ist.
 In diesem Modell sollen folgende Punkte analysiert werden:
@@ -17,6 +19,7 @@ Variablen:
 - max_capacity_patch:
 - growth_rate:
 - decrease_rate:
+
 - behave_rate
 - learning_faktor
 - position
