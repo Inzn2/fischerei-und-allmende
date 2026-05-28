@@ -19,7 +19,7 @@ Für uns nicht interessant:
 Welche Dinge/Elemente gibt es? Was charakterisiert sie?
 
 Fischer
-- Anzahl der Fischer am See (z.B. 20)
+- Anzahl der Fischer am See (20)
 - Postion der Fischer (Patch)
 - Verhalten der Fischer (von 1/kooperativ bis 9/ego => Faktor bestimmt den Fischfang: 1 bis 9 Fische pro Zeitschritt)
 - Nähe/Distanz zu anderen Fischern (beeinflusst das Verhalten)
@@ -27,17 +27,17 @@ Auf Saktionierung/Bestrafung bzw. Belohnung wird im Modell verzichtet.
 
 Fische
 - Anzahl im See (Patch für Fischbestand nicht wichtig.)
-- Maximale Kapazität im See (z.B. 1.000)
-- Minimumbestand (Kipp-Größe, ab der sich der Bestand nicht mehr erholen kann, z.B. 200)
-- Regenerationsrate (z.B. 10% pro Zeitschritt bis zur Maximalgrenze)
+- Maximale Kapazität im See (1000)
+- Minimumbestand (Kipp-Größe, ab der sich der Bestand nicht mehr erholen kann, 200 = Spielstopp, System kippt)
+- Regenerationsrate (10% pro Zeitschritt bis zur Maximalgrenze)
 
 Patches (See als Gitter von Fisch-Patches dargestellt.)
-- Anzahl Patches (z.B. 10x10)
-- Koordinaten der Patches (Wird benötigt für Position der Fischer und die Grenzen des Sees?)
+- Anzahl Patches (20x20)
+- Koordinaten der Patches (Wird benötigt für Position der Fischer und die Grenzen des Sees)
 Max. Kapazität an Fischen pro Patch nicht wichtig.
 Diffusion zwischen Patches wird nicht betrachtet.
 
-- Simulationsdauer: 1.000 Zeitschritte
+- Simulationsdauer: 1.000 Zeitschritte oder Spielstopp (wenn 200 Fischbestand erreicht)
 
 ## 3. Prozess Overview and Scheduling (Zeitplan)
 Was tun die Entitäten in welcher Reihenfolge?
@@ -113,21 +113,21 @@ Wichtige Outputgrößen:
 ## 5. Initialization
 Wie wird das Modell gestartet?
 
-Der See wird als 10x10 Gitter initialisiert (x,y-Koordinatensystem)
+Der See wird als 20x20 Gitter initialisiert (x,y-Koordinatensystem)
 
 Der See:
-- Maximale Kapazität, max_capacity_lake=1.000
+- Maximale Kapazität, max_capacity_lake=1000
 - Minimale Kapazität (Kipppunkt), min_capacity_lake=200
 - Regenerationsrate Fischbestand, regen_rate=0,1 (10%) bis max_capacity
 
 Fische im See: 
-- Anfangsbestand, fish_stock=1.000
+- Anfangsbestand, fish_stock=1000
 
 Fischer:
 - Anzahl der Fischer am See: fisherman=20
-- Postion der Fischer (Patch): position_fm= (x,y-Koordinaten), zufallsverteilt (von 0-1 / 0 bedeutet alle starten isoliert. 1 bedeutet alle starten als Gruppe in direkter Nachbarschaft)
-- Verhalten der Fischer: behavefactor_gr= (gewünschter Start-Durchschnittswert eingeben, z.B. 5) => daraus ergeben sich die Einzelwerte zufallsgeneriert.
-behavefactor_fm1=... (von 1/kooperativ bis 9/ego. Der Faktor bestimmt den Fischfang: bei behavefactor_fm=1 wird 1 Fisch pro Zeitschritt gefangen / bei behavefactor_fm=9 werden 9 Fische pro Zeitschritt gefangen / gleiches Prinzip für 2-8)
+- Postion der Fischer (Patch): position_f= (x,y-Koordinaten), zufallsverteilt (von 0-1, 0 bedeutet alle starten isoliert, 1 bedeutet alle starten als Gruppe in direkter Moore-Nachbarschaft)
+- Verhalten der Fischer: behavefactor_gr= (gewünschter Start-Durchschnittswert eingeben, z.B. 0.5) => daraus ergeben sich die Einzelwerte zufallsgeneriert
+behavefactor_f1=... (von 1/kooperativ bis 9/ego. Der Faktor bestimmt den Fischfang: bei behavefactor_f=1 wird 1 Fisch pro Zeitschritt gefangen / bei behavefactor_f=9 werden 9 Fische pro Zeitschritt gefangen / gleiches Prinzip für 2-8)
 
 Random Seed wird gesetzt.
 
@@ -141,25 +141,25 @@ Wie funktioniert jeder Prozess im Detail?
 
 Schritt 1: Fischer fischen.
 Am Beginn jedes Zeitschritts fischen die Fischer auf Basis der jeweils hinterlegten Verhaltensregel je Fischer.
-fishing_fm1 = ...
-Neuer Fischbestand im See wird gespeichert: fish_stock = fish_stock - fishing_fm1 - ...
-Kipppunkt-Abgleich: Wenn fish_stock < min_capacity_lake, dann bricht die Animation ab. 
+fishing_f1 = ...
+Neuer Fischbestand im See wird gespeichert: fish_stock = fish_stock - fishing_f1 - ...
+Kipppunkt-Abgleich: Wenn fish_stock < min_capacity_lake, dann bricht die Animation ab = Spielstopp
 
 Schritt 2: Die Verhaltensregel bei den Fischern wird adaptiert. 
 Hat ein Fischer keinen anderen Fischer auf einem Nachbarpatch: 
-behavefactor_fm = behavefactor + 1 (er wird egoistischer). Bis max. 9 möglich.
+behavefactor_f = behavefactor + 1 (er wird egoistischer). Bis max. 9 möglich.
 Begegnen sich ein oder mehrere Fischer auf einem Nachbarpatch: 
-Abgleich, wer den am stärksten ausgeprägten behavefactor hat (wie weit ist der Fischer von der Mitte entfernt): 
-|behavefactor_fm1 - 5| =
-|behavefactor_fm2 - 5| =
-wenn |behavefactor_fm1 - 5| - |behavefactor_fm2 - 5| = 0, dann bleibt das Verhalten unverändert. 
-wenn |behavefactor_fm1 - 5| - |behavefactor_fm2 - 5| = +, dann passt sich fm2 um 1 an fm1 an.
-wenn |behavefactor_fm1 - 5| - |behavefactor_fm2 - 5| = -, dann passt sich fm1 um 1 an fm1 an.
+Abgleich, wer den am stärksten ausgeprägten behavefactor hat (wie weit ist der Fischer von der Mitte (=5) entfernt): 
+|behavefactor_f1 - 5| =
+|behavefactor_f2 - 5| =
+wenn |behavefactor_f1 - 5| - |behavefactor_f2 - 5| = 0, dann bleibt das Verhalten unverändert. 
+wenn |behavefactor_f1 - 5| - |behavefactor_f2 - 5| = +, dann passt sich f2 um 1 an f1 an.
+wenn |behavefactor_f1 - 5| - |behavefactor_f2 - 5| = -, dann passt sich f1 um 1 an f1 an.
 
 Schritt 3: Fischer wechseln den Patch: 
-Ein Patch weiter. Maximal 8 Nachbarfelder zur Auswahl (außer an den Rändern des Sees). Zufallsgeneriert. 
-???
+Ein Patch weiter. Maximal 8 Nachbarfelder zur Auswahl (außer an den Rändern des Sees). Zufallsgeneriert
+
 
 Schritt 4: Fische regeneriern sich.
-Am Ende jedes Zeitschritts regeneriert sich der Fischbestand um den Regenerationsfaktor bis maximal zur Kapazitätsgrenze:
+Am Ende jedes Zeitschritts regeneriert sich der Fischbestand um den Regenerationsfaktor bis maximal zur Kapazitätsgrenze (max 1000):
 fish_stock = fish_stock + fish_stock*regen_rate
