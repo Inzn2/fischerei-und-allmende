@@ -1,8 +1,18 @@
-def main():
-    print("Hello from fischerei-und-allmende!")
+import matplotlib.pyplot as plt
+import numpy as np
 
-#Test 1
-#test 2
-#Test 3
-if __name__ == "__main__":
-    main()
+#defining parameters
+
+grid=400
+fish_stok=1000
+fisher=20
+
+max_capacity_lake=1000
+min_capacity_lake=200
+regen_rate = 0.1
+
+behave_factor_f=5 # 0 - 9 for fisher
+behvave_factor_gr=0.5 # 0 - 1 for group
+
+time_steps=1000
+
