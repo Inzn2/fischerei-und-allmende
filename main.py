@@ -1,10 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import random 
 
 #defining parameters
 
-grid=400
-fish_stok=1000
+grid_width=20
+grid_height=20
+
+fish_stock=1000
+max_fish = 1000
+min_fish = 200
+
 fisher=20
 
 max_capacity_lake=1000
@@ -16,3 +22,4 @@ behvave_factor_gr=0.5 # 0 - 1 for group
 
 time_steps=1000
 
+random.seed(42) # Fester Zufalls-Seed für Reproduzierbarkeit
