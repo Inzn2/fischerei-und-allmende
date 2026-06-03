@@ -50,23 +50,23 @@ def get_neighbors(fisher):
             neighbors.append(other) # add the other fisher to the list of neighbors
     return neighbors
 
-def fish(): #Jeder Fischer fängt Fische. der behavior- WErt bestimmt die Fangmenge. (1 kooperativ, 9 egoistisch)
-    global fish_stock
+def fish(): 
+    """Every fisher catches fish. The behaviour value determines the catch amount(1 cooperative, 9 egoistic)."""
+    global fish_stock # global fish stock will change, because everybody can access them 
     
     total_catch = 0
     
     for fisher in fishers:
-        total_catch += fisher["behavior"]
+        total_catch += fisher["behavior"] # the catch amount is determined by the behavior value of the fisher(1-9)
     
-    print("Anzahl Fischer:", len(fishers))
-    print("Max behavior:", max(f["behavior"] for f in fishers))
     print("Total catch:", total_catch)
         
     fish_stock -= total_catch
     if fish_stock < 0:
-            fish_stock = 0
+            fish_stock = 0 # so it won't turn negative
 
-def adapt_behavior(): #Fischer passen ihr Verhalten an. Ohne Nachbar wird Fisher egoistisch. Mit Nachbarn: Der Fischer orientiert sich am stärksten ausgeprägtesten Verhalten in seiner Nachbarschaft. 
+def adapt_behavior():
+    """Fishers adapt their behavior. Without neighbors, fishers become egoistic. With neighbors: the fisher aligns with the most pronounced behavior in their neighborhood."""
     for fisher in fishers:
         neighbors = get_neighbors(fisher)
         
@@ -75,12 +75,12 @@ def adapt_behavior(): #Fischer passen ihr Verhalten an. Ohne Nachbar wird Fisher
         else:
             strongest_neighbor = neighbors[0]
             for neighbor in neighbors:
-                if abs(neighbor["behavior"] - 5) > abs(strongest_neighbor["behavior"] - 5):
+                if abs(neighbor["behavior"] - 5) > abs(strongest_neighbor["behavior"] - 5): # the strongest neighbor is the one with the most pronounced behavior (farthest from 5)
                     strongest_neighbor = neighbor
-            if fisher["behavior"] < strongest_neighbor["behavior"]:
-                fisher["behavior"] += 1
-            elif fisher["behavior"] > strongest_neighbor["behavior"]:
-                fisher["behavior"] -= 1
+            if fisher["behavior"] < strongest_neighbor["behavior"]: 
+                fisher["behavior"] += 1 
+            elif fisher["behavior"] > strongest_neighbor["behavior"]: 
+                fisher["behavior"] -= 1 # if the fisher is less egoistic than the strongest neighbor, it becomes more egoistic. If it is more egoistic, it becomes more cooperative. If they are the same, it stays the same.
                 
         if fisher["behavior"] < 1:
             fisher ["behavior"] = 1
@@ -88,29 +88,32 @@ def adapt_behavior(): #Fischer passen ihr Verhalten an. Ohne Nachbar wird Fisher
         if fisher ["behavior"] > 9:
             fisher ["behavior"] = 9
     
-def move_fishers(): #Jeder Fischer bewegt sich zufällig ein Feld weiter. (Moore-Nachbarschaft)
+def move_fishers():
+    """Every fisher moves randomly one field further. (Moore neighborhood)"""
     for fisher in fishers:
-        fisher["x"] += random.randint(-1, 1)
-        fisher["y"] += random.randint(-1, 1)
+        fisher["x"] += random.randint(-1, 1) # move randomly in x direction (-1, 0, or 1)
+        fisher["y"] += random.randint(-1, 1) # move randomly in y direction (-1, 0, or 1)
         
         if fisher["x"] < 0:
             fisher["x"] = 0
         if fisher["x"] >= grid_width:
-            fisher["x"] = grid_width - 1
+            fisher["x"] = grid_width - 1 # so they won't move out of the grid
         
         if fisher["y"] < 0:
             fisher["y"] = 0
         if fisher["y"] >= grid_height:
-            fisher["y"] = grid_height - 1
+            fisher["y"] = grid_height - 1 # same as for x coordinate
             
-def regenerate_fish(): #Fischbestand regeneriert sich. Pro Zeitschritt +10% (max 1000)
+def regenerate_fish():
+    """Fish stock regenerates. Per time step +10%"""
     global fish_stock
     
     fish_stock += fish_stock * regen_rate
     if fish_stock > max_fish:
-        fish_stock = max_fish
+        fish_stock = max_fish # so it won't exceed the maximum fish stock
 
-def simulation_step(): #Führt einen kompletten Simulationsschritt aus: Fischer fischen, Verhalten wird angepasst, Fischer bewegen sich, Fische regenerieren sich.
+def simulation_step(): 
+    """Does a complete simulationstep: Fishers catches, Behaviour adapts, fishers move, fish regenerate"""
     global current_step
     
     fish()
@@ -118,13 +121,14 @@ def simulation_step(): #Führt einen kompletten Simulationsschritt aus: Fischer 
     move_fishers()
     regenerate_fish()
     
-    current_step += 1
+    current_step += 1 # increase the current step by 1 after each simulation step, so we can keep track of how many steps have been simulated
     
 
-#------------------------------------------------------------------------------------
-#Hilfsfunktionen für Simulationsanzeige
+# ------------------------------------------------------------------------------------
+# helping functions for simulation (with the help of AI)
 
-def get_colors(): #Gibt jedem Fischer eine Farbe je nach Verhalten. Grün = kooperativ, Gelb = mittel, Rot = Egoistisch
+def get_colors():
+    """ Returns a list of colors for the fishers based on their behavior. Green for cooperative (1-3), Yellow for medium (4-6), Red for egoistic (7-9)."""
     colors = []
     for fisher in fishers:
         if fisher["behavior"] <=3:
@@ -135,32 +139,28 @@ def get_colors(): #Gibt jedem Fischer eine Farbe je nach Verhalten. Grün = koop
             colors.append("red")
     return colors
     
-def get_fish_stock_color(): #Farbcode für den Fischbestand: Grün = Stabil, Orange = Bestand kritisch, Rot = Kipppunkt erreicht
-     if fish_stock > 500:
-         return "green"
-     elif fish_stock > min_fish:
-         return "orange"
-     else:
-         return "red"
-def count_cooperative_fishers(): # Zählt die kooperativen Fischer 1-3
-    return sum(1 for fisher in fishers if fisher["behavior"] <= 3)
+def count_cooperative_fishers():
+    """ Returns the number of cooperative fishers (behavior 1-3)."""
+    return sum(1 for fisher in fishers if fisher["behavior"] <= 3) 
 
-def count_egoistic_fishers(): # Zählt die egoistischen Fischer 7-9
+def count_egoistic_fishers():
+    """ Returns the number of egoistic fishers (behavior 7-9)."""
     return sum(1 for fisher in fishers if fisher["behavior"] >= 7)
 
 #------------------------------------------------------------------------------------------
-#Visualisierung mit matplotlib
+#Visualisations with matplotlib (with the help of AI)
 
 fig, ax = plt.subplots(figsize=(7,7))
 
-def update(frame): # Diese Funktion wird immer wieder aufgerufen, Dadurch entsteht die Animation. 
+def update(frame):
+    """ Updates the plot for each frame of the animation. It clears the plot, runs a simulation step, and then plots the fishers with colors based on their behavior. It also updates the title with the current step and fish stock."""
     global fish_stock, current_step
     
     ax.clear()
     
     if fish_stock > min_fish and current_step < time_steps:
        simulation_step()
-       print("Schritt:", current_step, "fischbestand:", fish_stock)
+       print("timestep:", current_step, "fishstock:", fish_stock)
     
     x_values = [fisher["x"] for fisher in fishers]
     y_values = [fisher["y"] for fisher in fishers]
@@ -172,11 +172,11 @@ def update(frame): # Diese Funktion wird immer wieder aufgerufen, Dadurch entste
     ax.set_xlim(-1, grid_width)
     ax.set_ylim(-1, grid_height)
     
-    ax.set_xticks(range(grid_width))
+    ax.set_xticks(range(grid_width)) 
     ax.set_yticks(range(grid_height))
-    ax.grid(True)
+    ax.grid(True) # add grid lines to the plot for better visibility of the fishers positions
     
-    ax.set_title(f"Schritt: {current_step} | Fischbestand: {int(fish_stock)}")
+    ax.set_title(f"timestep: {current_step} | fishstock: {int(fish_stock)}") # update the title with the current step and fish stock, so we can see how they change over time
     
 animation = FuncAnimation(fig, update, frames=range(time_steps), interval=1000, repeat=False, cache_frame_data=False)
 plt.show()
