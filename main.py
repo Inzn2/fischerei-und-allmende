@@ -22,4 +22,6 @@ behvave_factor_gr=0.5 # 0 - 1 for group
 
 time_steps=1000
 
-random.seed(42) # Fester Zufalls-Seed für Reproduzierbarkeit
+random.seed(42) # Fester/Gleicher Zufalls-Seed für Reproduzierbarkeit
+
+# fishers 
