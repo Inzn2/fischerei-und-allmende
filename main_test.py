@@ -3,10 +3,9 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 import random 
 
-print("Programm gestartet")
 
-#-------------------------------------------------------------------------------------
-#defining parameters
+# -------------------------------------------------------------------------------------
+# defining parameters
 
 grid_width = 20
 grid_height = 20
@@ -19,13 +18,13 @@ regen_rate = 0.10
 number_of_fishers = 20
 
 time_steps = 1000
-current_step = 0   #Zeitschritt der Simulation startet bei 0 
+current_step = 0   # timesteps of simulation starts at 0
 
-random.seed(42) # Fester/Gleicher Zufalls-Seed für Reproduzierbarkeit
+random.seed(42) # same random seed for reproducibility
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
-# fishers 
+# fishers get their positions and behaviours
 
 fishers = []
 for i in range(number_of_fishers):
@@ -35,20 +34,20 @@ for i in range(number_of_fishers):
         "behavior": random.randint(1, 9)}
     fishers.append(fisher)
     
-#----------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------
 
-# Modell-Funktionen
+# modell-functions
 
-def get_neighbors(fisher): #Sucht alle Fischer in der Moore-Nachbarschaft. (8 direkte Felder)
+def get_neighbors(fisher):
+    """Returns a list of neighboring fishers in the Moore neighborhood (8 surrounding cells)."""
     neighbors = []
     for other in fishers:
-        if other in fishers:
-            if other ==fisher:
-                continue
-            dx = abs(fisher["x"] - other["x"])
-            dy = abs(fisher["y"] - other["y"])
-            if dx <= 1 and dy <= 1:
-                neighbors.append(other)
+        if other == fisher:
+            continue
+        dx = abs(fisher["x"] - other["x"]) # distance between fishers x coordinate
+        dy = abs(fisher["y"] - other["y"]) # distance between fishers y coordinate
+        if dx == 1 and dy == 1: # if the other fisher is in the Moore neighborhood (including diagonals)
+            neighbors.append(other) # add the other fisher to the list of neighbors
     return neighbors
 
 def fish(): #Jeder Fischer fängt Fische. der behavior- WErt bestimmt die Fangmenge. (1 kooperativ, 9 egoistisch)
