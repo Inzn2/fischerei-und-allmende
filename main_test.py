@@ -10,12 +10,12 @@ import random
 grid_width = 20
 grid_height = 20
 
-fish_stock = 1000
-max_fish = 1000
+fish_stock = 50000
+max_fish = 100000
 min_fish = 200
 regen_rate = 0.10
 
-number_of_fishers = 20
+number_of_fishers = 1000
 
 time_steps = 1000
 current_step = 0   # timesteps of simulation starts at 0
@@ -31,7 +31,7 @@ for i in range(number_of_fishers):
     fisher = {
         "x": random.randint(0, grid_width - 1),
         "y": random.randint(0, grid_height - 1),
-        "behavior": random.randint(1, 9)}
+        "behavior": random.randint(1, 3)}
     fishers.append(fisher)
     
 # ----------------------------------------------------------------------------------
