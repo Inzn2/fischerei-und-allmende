@@ -89,20 +89,29 @@ def adapt_behavior():
             fisher ["behavior"] = 9
     
 def move_fishers():
-    """Every fisher moves randomly one field further. (Moore neighborhood)"""
+    """Every fisher moves randomly one field further (Moore neighborhood),
+    but never onto a field that is already occupied by another fisher."""
     for fisher in fishers:
-        fisher["x"] += random.randint(-1, 1) # move randomly in x direction (-1, 0, or 1)
-        fisher["y"] += random.randint(-1, 1) # move randomly in y direction (-1, 0, or 1)
-        
-        if fisher["x"] < 0:
-            fisher["x"] = 0
-        if fisher["x"] >= grid_width:
-            fisher["x"] = grid_width - 1 # so they won't move out of the grid
-        
-        if fisher["y"] < 0:
-            fisher["y"] = 0
-        if fisher["y"] >= grid_height:
-            fisher["y"] = grid_height - 1 # same as for x coordinate
+        # alle aktuell belegten Felder ausser dem eigenen
+        occupied = {(f["x"], f["y"]) for f in fishers if f is not fisher}
+
+        new_x = fisher["x"] + random.randint(-1, 1) # move randomly in x direction (-1, 0, or 1)
+        new_y = fisher["y"] + random.randint(-1, 1) # move randomly in y direction (-1, 0, or 1)
+
+        if new_x < 0:
+            new_x = 0
+        if new_x >= grid_width:
+            new_x = grid_width - 1 # so they won't move out of the grid
+
+        if new_y < 0:
+            new_y = 0
+        if new_y >= grid_height:
+            new_y = grid_height - 1 # same as for x coordinate
+
+        # only move when free field, otherwise stay in place
+        if (new_x, new_y) not in occupied:
+            fisher["x"] = new_x
+            fisher["y"] = new_y
             
 def regenerate_fish():
     """Fish stock regenerates. Per time step +10%"""
