@@ -11,11 +11,12 @@ grid_height = 20
 start_fish = 5000
 max_fish = 5000
 min_fish = 0
-regen_rate = 0.0366  
+regen_rate = 0.0366
+
 
 number_of_fishers = 30
 
-time_steps = 200
+time_steps = 1000
 
 
 # The rules switch determines whether there are rules at the lake or not.
