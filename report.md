@@ -109,8 +109,7 @@ Diese einfache Regel erzeugt die wesentlichen Unterschiede zwischen beiden Simul
 Nach der Verhaltensanpassung bewegen sich die Fischer*innen zufällig über das Raster. Pro Zeitschritt kann eine Bewegung um maximal ein Feld in horizontaler, vertikaler oder diagonaler Richtung erfolgen. Bewegungen außerhalb der Grenzen des Sees sind nicht zulässig. Zudem können bereits von anderen Fischer*innen besetzte Felder nicht betreten werden. Durch die zufällige Bewegung entstehen fortlaufend neue räumliche Konstellationen, wodurch sich Begegnungen und Phasen der Isolation dynamisch verändern. Da die Verhaltensanpassung unmittelbar von der lokalen Nachbarschaft abhängt, stellt die Bewegung einen zentralen Mechanismus für die Entstehung der sozialen Dynamik im Modell dar.
 
 ### Regeneration des Fischbestands
-Nach dem Fischfang regeneriert sich der Bestand.
-Der entsprechende Mechanismus sieht im Code wie folgt aus.
+Nach dem Fischfang wächst der Fischbestand entsprechend einer festgelegten Regenerationsrate. Der entsprechende Mechanismus ist im folgenden Code dargestellt.
 ```python
 def regenerate_fish(self):
     self.fish_stock += self.fish_stock * regen_rate
@@ -118,7 +117,11 @@ def regenerate_fish(self):
     if self.fish_stock > max_fish:
         self.fish_stock = max_fish
 ```
-Technisch handelt es sich um einen Wachstumsprozess mit einer Wachstumsrate von 3,66 % pro Zeitschritt. Gleichzeitig begrenzt die maximale Kapazität das Wachstum nach oben. Die Modellannahme besteht darin, dass sich der Bestand umso schneller erholt, je größer der verbleibende Bestand ist. Dieser Mechanismus wirkt dem Fischfang entgegen und bestimmt gemeinsam mit dem Verhalten der Fischer*innen die langfristige Systemdynamik.
+Der Code implementiert einen proportionalen Wachstumsprozess, bei dem der aktuelle Fischbestand in jedem Zeitschritt um 3,66 % erhöht wird. Anschließend wird überprüft, ob die maximale Kapazität des Sees überschritten wird. In diesem Fall wird der Bestand auf den festgelegten Maximalwert von 5000 Fischen begrenzt.
+
+Die Modellannahme besteht darin, dass sich größere Bestände schneller erholen als kleinere Bestände, da das Wachstum proportional zur vorhandenen Population erfolgt. Die Regenerationsrate von 3,66 % wurde dabei so gewählt, dass der Fischbestand bei kooperativem Verhalten langfristig erhalten bleiben kann, während eine dauerhaft hohe Entnahme durch egoistisches Verhalten weiterhin zu einer Übernutzung der Ressource führt. Dadurch wird sichergestellt, dass die beobachteten Unterschiede zwischen den beiden Szenarien primär auf die soziale Dynamik der Fischer*innen und nicht ausschließlich auf die ökologische Regeneration zurückzuführen sind.
+
+Der Regenerationsmechanismus wirkt dem durch den Fischfang verursachten Bestandsrückgang entgegen und bestimmt gemeinsam mit dem Verhalten der Fischer*innen, ob die Ressource langfristig stabil bleibt oder kollabiert.
 
 ### Datenspeicherung
 Während der Simulation werden mehrere Kenngrößen gespeichert:
@@ -186,7 +189,9 @@ Um es realistischer zu machen, müssten wir unsere starken Vereinfachungen zumin
 
 
 ## References
-
+Hardin, G. (1968). The Tragedy of the Commons. Science, 162(3859), 1243–1248
+Janssen, M. A. (2010). Introducing ecological dynamics into common-pool resource experiments. Ecology and Society, 15(2), Article 8
+Ostrom, E. (1990). Governing the Commons: The Evolution of Institutions for Collective Action. Cambridge: Cambridge University Press
 
 ## Appendix A: ODD
 
