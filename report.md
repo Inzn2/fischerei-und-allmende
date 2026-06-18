@@ -17,9 +17,9 @@ Vor diesem theoretischen Hintergrund untersucht die vorliegende Arbeit einen spe
 
 Daraus ergibt sich folgende Forschungsfrage:
 
-Wie wirken sich soziale Nähe beziehungsweise Isolation auf das Fisch-Verhalten von Fischer*innen und damit auf die Stabilität einer gemeinsam genutzten Ressource aus?
+Wie wirken sich soziale Nähe beziehungsweise Isolation auf das Verhalten von Fischer*innen und damit auf die Stabilität einer gemeinsam genutzten Ressource aus?
 
-Zur Beantwortung dieser Frage wurde ein agentenbasiertes Simulationsmodell entwickelt, in dem Fischer*innen auf einem Raster agieren und einen gemeinsamen Fischbestand nutzen. Verglichen werden zwei Szenarien: eines ohne soziale Einflussnahme und eines, in dem Begegnungen zwischen benachbarten Fischerinnen kooperatives Verhalten fördern. Ziel des Modells ist es nicht, reale Fischereisysteme vollständig abzubilden, sondern die grundlegende Bedeutung sozialer Interaktionen für die nachhaltige Nutzung gemeinsamer Ressourcen sichtbar zu machen.
+Zur Beantwortung dieser Frage wurde ein agentenbasiertes Simulationsmodell entwickelt, in dem Fischer*innen auf einem Raster agieren und einen gemeinsamen Fischbestand nutzen. Verglichen werden zwei Szenarien: eines ohne soziale Einflussnahme und eines, in dem Begegnungen zwischen benachbarten Fischer*innen kooperatives Verhalten fördern. Ziel des Modells ist es nicht, reale Fischereisysteme vollständig abzubilden, sondern die grundlegende Bedeutung sozialer Interaktionen für die nachhaltige Nutzung gemeinsamer Ressourcen sichtbar zu machen.
 
 ## 2. Method
 
@@ -44,10 +44,10 @@ y-Position auf dem Raster
 Verhaltenswert („behavior“)
 Alle Fischer*innen starten mit einem Verhaltenswert von 1 und damit maximal kooperativem Verhalten. Der Verhaltenswert liegt stets zwischen 1 und 9.
 Die Bedeutung des Verhaltenswerts ist unmittelbar mit der Fangmenge verknüpft:
-Interpreation Verhaltenswert:
-1 … stark kooperatuv
+Interpretation Verhaltenswert:
+1 … stark kooperativ
 2-3 … kooperativ
-4-6 … mittleres verhalten
+4-6 … mittleres Verhalten
 7-8 … egoistisch
 9 … maximal egoistisch
 Der Verhaltenswert bestimmt direkt die Anzahl der Fische, die eine Person pro Zeitschritt fängt. Ein*e Fischer*in mit Verhalten 1 entnimmt einen Fisch pro Zeitschritt, ein*e Fischer*in mit Verhalten 9 entsprechend neun Fische.
@@ -202,9 +202,11 @@ Die Ergebnisse legen somit nahe, dass soziale Interaktion einen wesentlichen Bei
 
 
 ## 4. Discussion, Conclusion and Limitations
-Die Ergebnisse der Simulation liefern eine klare Antwort auf die Forschungsfrage. Obwohl sich die Fischer*innen in beiden Szenarien unter identischen räumlichen Bedingungen bewegen, entstehen grundlegend unterschiedliche Entwicklungen. Im Szenario ohne soziale Regeln nimmt egoistisches Verhalten kontinuierlich zu, wodurch der „Entnahmedruck“ auf den Fischbestand steigt und die Ressource schließlich kollabiert. Im Szenario mit sozialen Regeln wirken Begegnungen zwischen Fischerinnen hingegen verhaltensmodifizierend. Soziale Nähe fördert kooperatives Verhalten und reduziert den Druck auf den gemeinsamen Fischbestand, sodass die Ressource langfristig erhalten bleibt.
+Die Ergebnisse der Simulation liefern eine klare Antwort auf die Forschungsfrage. Obwohl sich die Fischer*innen in beiden Szenarien unter identischen räumlichen Bedingungen bewegen, entstehen grundlegend unterschiedliche Entwicklungen. Im Szenario ohne soziale Regeln nimmt egoistisches Verhalten kontinuierlich zu, wodurch der „Entnahmedruck“ auf den Fischbestand steigt und die Ressource schließlich kollabiert. Im Szenario mit sozialen Regeln wirken Begegnungen zwischen Fischer*innen hingegen verhaltensmodifizierend. Soziale Nähe fördert kooperatives Verhalten und reduziert den Druck auf den gemeinsamen Fischbestand, sodass der Kollaps der Ressource deutlich verzögert wird.
 
 Die Ergebnisse stehen damit im Einklang mit theoretischen Überlegungen der Allmendeforschung. Das Szenario ohne Regeln entspricht der von Hardin beschriebenen „The Tragedy of the Commons“, bei der individuelle Nutzenmaximierung zur Übernutzung gemeinsamer Ressourcen führt. Das Szenario mit Regeln zeigt dagegen, dass selbst einfache soziale Mechanismen ausreichen können, um kooperatives Verhalten zu stabilisieren und die nachhaltige Nutzung einer Ressource zu ermöglichen. Die Simulation unterstützt somit die grundlegende Annahme Ostroms, dass soziale Interaktionen und gemeinschaftliche Regeln einen wesentlichen Beitrag zur Stabilität gemeinsamer Ressourcen leisten können.
+
+Die zusätzlichen Langzeitsimulationen zeigen zudem, dass die im Modell implementierte soziale Regel zwar eine deutliche Stabilisierung des Systems bewirkt, jedoch keine vollständige Nachhaltigkeit garantiert. Während der Fischbestand über mehr als 200 Zeitschritte hinweg nahezu auf seinem Ausgangsniveau verbleibt, tritt bei einer Verlängerung der Simulation auf 300 Zeitschritte schließlich ebenfalls ein Zusammenbruch der Ressource auf. Die Ergebnisse deuten daher darauf hin, dass soziale Nähe und Verhaltensanpassung allein nicht ausreichen, um eine gemeinsame REssource dauerhaft zu sichern. Sie können jedoch die Geschwindigkeit der Übernutzung erheblich reduzieren und die Lebensdauer des Systems deutlich verlängern. 
 
 Gleichzeitig verdeutlichen die Ergebnisse, dass räumliche Nähe allein nicht ausreichend ist. Entscheidend ist, ob aus dieser Nähe tatsächlich soziale Wahrnehmung und Verhaltensanpassung entstehen. Im Modell entfalten Begegnungen nur dann eine stabilisierende Wirkung, wenn sie mit einer Veränderung des individuellen Verhaltens verbunden sind. Die nachhaltige Nutzung der Ressource ist somit nicht das Ergebnis der räumlichen Struktur selbst, sondern der sozialen Prozesse, die innerhalb dieser Struktur stattfinden.
 
@@ -217,9 +219,11 @@ Zusammenfassend zeigt das Modell, dass soziale Interaktionen einen entscheidende
 
 
 ## References
-Hardin, G. (1968); The Tragedy of the Commons; Science 162, 1243-1248.
-Ostrom, E. (1990); Governing the Commons: The evolution of institutions for collective action; Cambridge University Press.
-Janssen, M.A., Holahan, R., Lee, A., & Ostrom, E. (2010); Lab experiments for the study of social-ecological systems; Science, 328(5978), 613-617.
+Hardin, G. (1968). The Tragedy of the Commons: Science 162, 1243-1248.
+
+Ostrom, E. (1990); Governing the Commons: The evolution of institutions for collective action. Cambridge University Press.
+
+Janssen, M.A., Holahan, R., Lee, A., & Ostrom, E. (2010). Lab experiments for the study of social-ecological systems. Science, 328(5978), 613-617.
 
 
 ## Appendix A: ODD
