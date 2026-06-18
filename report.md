@@ -1,7 +1,7 @@
 # Fischerei und Allmende 
 
 ## Abstract
-Diese Arbeit untersucht den Einfluss sozialer Nähe und Isolation auf das Verhalten von Akteuren*innen sowie auf die Stabilität einer gemeinsam genutzten Ressource. Hierzu wurde ein agentenbasiertes Modell entwickelt, in dem 30 Fischer*innen auf einem zweidimensionalen Raster agieren und auf einen gemeinsamen Fischbestand zugreifen. Ausgehend von theoretischen Überlegungen zu Allmendegütern werden zwei Szenarien verglichen: ein Szenario ohne soziale Regeln sowie ein Szenario, in dem lokale Begegnungen kooperatives Verhalten fördern. Die Ergebnisse zeigen deutliche Unterschiede zwischen beiden Bedingungen. Während im Szenario ohne Regeln egoistisches Verhalten kontinuierlich zunimmt und der Fischbestand innerhalb des Simulationszeitraums kollabiert, bleibt die Ressource im Szenario mit sozialen Regeln langfristig stabil und nahe ihrer maximalen Kapazität. Die Simulation verdeutlicht damit die Bedeutung sozialer Interaktionen für die nachhaltige Nutzung gemeinsamer Ressourcen. Die Aussagekraft der Ergebnisse wird jedoch durch die bewusste Vereinfachung des Modells begrenzt, insbesondere durch die Modellierung eines einzigen globalen Fischbestands sowie die Reduktion sozialer Prozesse auf eine einfache Verhaltensanpassungsregel.
+Diese Arbeit untersucht den Einfluss sozialer Nähe und Isolation auf das Verhalten von Akteuren*innen sowie auf die Stabilität einer gemeinsam genutzten Ressource. Hierzu wurde ein agentenbasiertes Modell entwickelt, in dem 30 Fischer*innen auf einem zweidimensionalen Raster agieren und auf einen gemeinsamen Fischbestand zugreifen. Ausgehend von theoretischen Überlegungen zu Allmendegütern werden zwei Szenarien verglichen: ein Szenario ohne soziale Regeln sowie ein Szenario, in dem lokale Begegnungen kooperatives Verhalten fördern. Die Ergebnisse zeigen deutliche Unterschiede zwischen beiden Bedingungen. Während im Szenario ohne Regeln egoistisches Verhalten kontinuierlich zunimmt und der Fischbestand innerhalb des Simulationszeitraums kollabiert, bleibt die Ressource im Szenario mit sozialen Regeln über lange Zeiträume stabil und nahe ihrer maximalen Kapazität. Die Simulation verdeutlicht damit die Bedeutung sozialer Interaktionen für die nachhaltige Nutzung gemeinsamer Ressourcen. Die Aussagekraft der Ergebnisse wird jedoch durch die bewusste Vereinfachung des Modells begrenzt, insbesondere durch die Modellierung eines einzigen globalen Fischbestands sowie die Reduktion sozialer Prozesse auf eine einfache Verhaltensanpassungsregel.
 
 ## 1. Introduction
 Die Nutzung gemeinsam genutzter Ressourcen zählt zu den klassischen Fragestellungen der Sozial- und Umweltwissenschaften. Besonders relevant ist dabei die Frage, unter welchen Bedingungen Individuen bereit sind, ihre eigenen Interessen zugunsten des langfristigen Erhalts einer Ressource einzuschränken. Fischbestände, Weideflächen oder Bewässerungssysteme stellen typische Beispiele solcher Allmendegüter (Common-Pool Resources) dar.
@@ -309,7 +309,8 @@ Nähe (Fischer*innen treffen sich in benachbarten Feldern): Sie lernen von/orien
 
 # 4.5 Prediction
 Wie antizipieren Agenten zukünftige Zustände?
--
+
+Die Agenten treffen keine Vorhersage über zukünftige Zustände. Entscheidungen basieren ausschließlich auf der aktuellen lokalen Nachbarschaftssituation.
 
 # 4.6 Sensing
 Was können Agenten über ihre Umgebung und andere Agenten wahrnehmen? Über welche Distanz?
@@ -325,14 +326,15 @@ Wie beeinflussen sich Agenten gegenseitig?
 Wo und warum wird Zufall verwendet?
 
 Zufall wird verwendet bei:
-- Initialisierung: Verhaltensregeln den einzelnen Fischern zuordnen. 
+
 - Initialisierung: Startpositionen der Fischer auf dem See (Patches) fixieren.
 Basis dafür sind einstellbare Durchschnittswerte für das Verhalten aller Fischer (z.B. ego/sozial zw. 1 und 9) und Nähe/Distanz-Verhältnis
 Ein Random Seed wird gesetzt, um Reproduzierbarkeit zu gewährleisten.
 
 # 4.9 Collectives
 Gibt es Gruppen von Agenten, die als Einheit handeln?
--
+
+Im Modell existieren keine formalen Gruppen oder Kollextive. Alle Fischer*innen handeln als individuelle Agenten. 
 
 # 4.10 Observation
 Welche Outputs brauchen wir, um das Modell gegen unsere Patterns zu testen?
@@ -349,13 +351,13 @@ Der See wird als 20x20 Gitter initialisiert (x,y-Koordinatensystem)
 Der See:
 - Maximale Kapazität, max_capacity_lake= 5000
 - Minimale Kapazität (Kipppunkt), min_capacity_lake= 0
-- Regenerationsrate Fischbestand, regen_rate=0,366 (3,66%) bis max_capacity
+- Regenerationsrate Fischbestand, regen_rate=0,0366 (3,66%) bis max_capacity
 
 Fische im See: 
 - Anfangsbestand, fish_stock=5000
 
-Fischer:
-- Anzahl der Fischer am See: fisherman=50
+Fischer
+- Anzahl der Fischer am See: fisherman=30
 - Postion der Fischer (Patch): position_f= (x,y-Koordinaten), zufallsverteilt (von 0-1, 0 bedeutet alle starten isoliert, 1 bedeutet alle starten als Gruppe in direkter Moore-Nachbarschaft)
 - Alle Fischer*innen starten mit Verhalten = 1 
 - Verhalten der Fischer: behavefactor_gr= 1
@@ -375,7 +377,7 @@ Schritt 1: Fischer fischen.
 Am Beginn jedes Zeitschritts fischen die Fischer*innen auf Basis der jeweils hinterlegten Verhaltensregel je Fischer*in.
 fishing_f1 = ...
 Neuer Fischbestand im See wird gespeichert: fish_stock = fish_stock - fishing_f1 - ...
-Kipppunkt-Abgleich: Wenn fish_stock < min_capacity_lake, dann bricht die Animation ab = Spielstopp
+
 
 Schritt 2: Die Verhaltensregel bei den Fischern wird adaptiert. 
 Hat ein Fischer keinen anderen Fischer auf einem Nachbarpatch: 
@@ -388,5 +390,5 @@ Ein Patch weiter. Maximal 8 Nachbarfelder zur Auswahl (außer an den Rändern de
 
 
 Schritt 4: Fische regeneriern sich.
-Am Ende jedes Zeitschritts regeneriert sich der Fischbestand um den Regenerationsfaktor 0,366 bis maximal zur Kapazitätsgrenze (max 5000):
+Am Ende jedes Zeitschritts regeneriert sich der Fischbestand um den Regenerationsfaktor 0,0366 bis maximal zur Kapazitätsgrenze (max 5000):
 fish_stock = fish_stock + fish_stock*regen_rate
