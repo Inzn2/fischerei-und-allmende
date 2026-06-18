@@ -1,7 +1,8 @@
 # Fischerei und Allmende 
 
 ## Abstract
-Diese Arbeit untersucht die Frage, wie soziale Nähe und Isolation das Verhalten von Fischer*innen sowie die Stabilität einer gemeinsam genutzten Ressource beeinflussen. Hierzu wurde ein agentenbasiertes Modell entwickelt, in dem 30 Fischer*innen auf einem 20×20-Raster agieren und auf einen gemeinsamen Fischbestand zugreifen. Verglichen werden zwei Szenarien: ein Szenario ohne soziale Regeln, in dem egoistisches Verhalten kontinuierlich zunimmt, und ein Szenario mit sozialen Regeln, in dem Begegnungen zwischen benachbarten Fischer*innen egoistische Tendenzen reduzieren. Die Simulationsergebnisse veranschaulichen, dass der Fischbestand ohne soziale Regeln bereits vor dem Ende des Simulationszeitraums kollabiert, während er im Szenario mit sozialen Regeln langfristig nahezu auf dem maximalen Bestandsniveau erhalten bleibt. Die Ergebnisse legen nahe, dass nicht räumliche Nähe allein, sondern deren Einfluss auf das Verhalten der Akteur*innen entscheidend für die nachhaltige Nutzung gemeinsam genutzter Ressourcen ist. Die Aussagekraft des Modells wird jedoch durch seine bewusste Vereinfachung begrenzt, insbesondere durch die Modellierung eines einzigen globalen Fischbestands sowie die Reduktion sozialer Interaktionen auf eine einfache Verhaltensanpassungsregel.
+Diese Arbeit untersucht die Frage, wie soziale Nähe und Isolation das Verhalten von Fischer*innen sowie die Stabilität einer gemeinsam genutzten Ressource beeinflussen. Hierzu wurde ein agentenbasiertes Modell entwickelt, in dem 30 Fischer*innen auf einem 20×20-Raster agieren und auf einen gemeinsamen Fischbestand zugreifen. Verglichen werden zwei Szenarien: ein Szenario ohne soziale Regeln, in dem egoistisches Verhalten kontinuierlich zunimmt, und ein Szenario mit sozialen Regeln, in dem Begegnungen zwischen benachbarten Fischer*innen egoistische Tendenzen reduzieren. 
+Die Simulationsergebnisse zeigen, dass der Fischbestand ohne soziale Regeln bereits nach kurzer Zeit kollabiert, während soziale Regeln den Kollaps deutlich verzögern und den Bestand über einen langen Zeitraum auf hohem Niveau stabilisieren. Bei einer Verlängerung der Simulation auf 300 Zeitschritte wird jedoch deutlich, dass auch dieses Szenario langfristig nicht vollständig nachhaltig ist. Die Ergebnisse legen wenngleich nahe, dass nicht räumliche Nähe allein, sondern deren Einfluss auf das Verhalten der Akteur*innen entscheidend für die nachhaltige Nutzung gemeinsam genutzter Ressourcen ist. Die Aussagekraft des Modells wird jedoch durch seine bewusste Vereinfachung begrenzt, insbesondere durch die Modellierung eines einzigen globalen Fischbestands sowie die Reduktion sozialer Interaktionen auf eine einfache Verhaltensanpassungsregel.
 
 ## 1. Introduction
 Die Aufgabenstellung unserer Gruppenarbeit ist schnell erklärt: Ein See, mehrere Fischer*innen am See und Fische im See. Der See soll als Gitter von Fisch-Patches dargestellt werden – jeder Patch mit logistischem Wachstum und Diffusion in die Nachbarzellen. Die Fischer*innen nutzen den See – je nach Verhaltensregeln bzw. -mix (naive Gewinnmaximierung, Imitation des erfolgreichsten Nachbarn, konditionale Kooperation oder Sanktionierung von Übernutzern) zeigt sich, ob der Bestand kollabiert, welche räumlichen Übernutzungsmuster entstehen und ob sich kooperative Normen selbst tragen. 
@@ -149,29 +150,52 @@ Die Bibliothek random steuert sämtliche Zufallsprozesse des Modells. Dazu gehö
 
 
 ## 3. Results
-
-Zur Untersuchung der Forschungsfrage wurden zwei Szenarien mit identischen Ausgangsbedingungen simuliert. Der einzige Unterschied bestand in der Verhaltensanpassung der Fischer*innen.
+Zur Untersuchung der Forschungsfrage wurden zwei Szenarien mit identischen Ausgangsbedingungen simuliert. Der einzige Unterschied bestand in der Verhaltensanpassung der Fischer*innen. Zur Auswertung wurden sowohl die räumliche Verteilung der Agent*innen als auch die zeitliche Entwicklung des Fischbestands betrachtet.
 
 ### Szenario ohne Regeln
-Im Szenario ohne Regeln entwickelt sich das Verhalten aller Fischer*innen schrittweise in Richtung maximaler Egoismus. Da der Verhaltenswert in jedem Zeitschritt ansteigt und schließlich die Obergrenze von 9 erreicht, nimmt auch die gesamte Fangmenge kontinuierlich zu.
-Die Folge ist ein rascher Rückgang des Fischbestands. Der gemeinsame Bestand wird bereits deutlich vor dem Ende der 200 Zeitschritte vollständig erschöpft und erreicht den Wert 0. Der Kollaps tritt somit bereits vor dem Ende der 200 Simulationsschritte ein.
-Im Endzustand der Visualisierung sind ausschließlich rote Agenten sichtbar, welches verdeutlicht, dass sich alle Fischer*innen zu maximal egoistischem Verhalten entwickelt haben. 
+Abbildung 1 zeigt den Zustand der Simulation nach 200 Zeitschritten im Szenario ohne soziale Regeln.
 
-Das Ergebnis entspricht den Erwartungen der „Tragedy of the Commons“ nach Hardin, wonach individuelle Nutzenmaximierung langfristig zur Übernutzung gemeinsamer Ressourcen führt.
-Wichtig ist jedoch die Interpretation des Endbildes. Der Programmcode enthält kein Abbruchkriterium bei leerem Fischbestand. Nachdem der Bestand bereits auf 0 gefallen ist, bewegen sich die Fischer*innen weiterhin über das Raster und passen ihr Verhalten weiterhin an. Sichtbare Endpositionen zeigen daher nicht den Zeitpunkt des eigentlichen Ressourcenkollapses, sondern lediglich den Zustand nach Abschluss der gesamten Simulationsdauer.
+![Abbildung 1: Endzustand ohne Regeln nach 200 Schritten](Abbildung1_Endzustand_ohne_regel_200.png)
+
+Im Szenario ohne Regeln entwickelt sich das Verhalten aller Fischer*innen schrittweise in Richtung maximaler Egoismus. Da der Verhaltenswert in jedem Zeitschritt ansteigt und schließlich die Obergrenze von 9 erreicht, nimmt auch die gesamte Fangmenge kontinuierlich zu.
+
+Wie in Abbildung 1 erkennbar, beträgt der Fischbestand nach 200 Zeitschritten 0 Fische. Gleichzeitig sind ausschließlich rote Agent*innen sichtbar, was darauf hinweist, dass alle Fischer*innen den maximalen Verhaltenswert erreicht haben.
+
+Die zeitliche Entwicklung des Fischbestands ist in Abbildung 2 dargestellt.
+
+![Abbildung 2: Fischbestand nach 200 Schritten](Abbildung2_Fischbestand_200.png)
+
+Die rote Kurve zeigt, dass der Bestand bereits nach ungefähr 40 Zeitschritten vollständig erschöpft ist. Der eigentliche Ressourcenkollaps tritt somit deutlich früher ein als der dargestellte Endzustand der Simulation.
+
+Da der Programmcode kein Abbruchkriterium bei leerem Fischbestand enthält, bewegen sich die Fischer*innen auch nach dem Kollaps weiterhin über das Raster und passen ihr Verhalten an. Die Endpositionen der Agent*innen repräsentieren daher nicht den Zeitpunkt des Ressourcenkollapses, sondern lediglich den Zustand nach Abschluss der Simulation.
 
 ### Szenario mit Regeln
-Im Szenario mit Regeln führt soziale Nähe zu einer Reduktion egoistischen Verhaltens. Begegnungen innerhalb der Moore-Nachbarschaft bewirkt eine stärkere Rücksichtnahme, hingegen Isolation egoistisches Verhalten begünstigt.
-Dadurch entsteht ein dynamisches Gleichgewicht verschiedener Verhaltensweisen. Kooperative, mittlere und egoistische Strategien existieren parallel nebeneinander. Der Bestand schwankt nur geringfügig um die maximale Kapazität und zeigt keine langfrisitge Abwärtstendenz. Dies ist auch in der Endvisualisierung sichtbar, in der grüne, gelbe und rote Agenten gemeinsam auftreten.
+Abbildung 3 zeigt den Zustand des Regel-Szenarios nach 200 Zeitschritten.
 
-Der Fischbestand bleibt während der gesamten Simulation nahezu auf maximalem Niveau. Nach 200 Zeitschritten betrug der Bestand in einem Durchlauf noch 4970 Fische und lag damit praktisch auf Höhe der maximalen Kapazität von 5000 Fischen. Die Ressource bleibt langfristig stabil und zeigt keinen Hinweis auf einen drohenden Kollaps.
+![Abbildung 3: Endzustand mit Regeln nach 200 Schritten](Abbildung3_Endzustand_mit_regel_200.png)
+
+Im Szenario mit sozialen Regeln beeinflussen Begegnungen innerhalb der Moore-Nachbarschaft das Verhalten der Fischer*innen. Die Anwesenheit von Nachbar*innen reduziert egoistische Tendenzen, während Isolation diese verstärkt.
+Nach 200 Zeitschritten beträgt der Fischbestand 4970 Fische und liegt damit nur geringfügig unter der maximalen Kapazität von 5000 Fischen. Gleichzeitig existieren kooperative (grün), mittlere (gelb) und egoistische (rot) Verhaltensweisen nebeneinander. Dies deutet auf ein dynamisches Gleichgewicht unterschiedlicher Strategien hin.
+
+Die grüne Kurve in Abbildung 2 bestätigt diesen Befund. Über nahezu den gesamten Simulationszeitraum bleibt der Bestand nahe der maximalen Kapazität und zeigt lediglich temporäre Schwankungen. Die niedrigsten Werte liegen bei etwa 4550 Fischen, bevor sich der Bestand erneut erholt.
+
+### Langfristige Entwicklung
+Um die Stabilität des Systems über einen längeren Zeitraum zu untersuchen, wurde die Simulation zusätzlich auf 300 Zeitschritte erweitert.
+
+Abbildung 4 zeigt die Entwicklung des Fischbestands für diesen längeren Zeithorizont.
+
+![Abbildung 4: Fischbestand über 300 Zeitschritte](Abbildung4_Fischbestand_300.png)
+
+Während der Fischbestand im Regel-Szenario bis etwa Zeitschritt 200 nahezu stabil bleibt, setzt anschließend ein kontinuierlicher Rückgang ein. Der Bestand sinkt zunächst langsam, beschleunigt sich jedoch im weiteren Verlauf und erreicht gegen Ende der Simulation ebenfalls den Wert 0.
+
+Die zusätzlichen Simulationen zeigen daher, dass die implementierte soziale Regel den Kollaps der Ressource nicht dauerhaft verhindert. Sie verlängert jedoch die Lebensdauer des Systems erheblich. Während die Ressource ohne Regeln bereits nach etwa 40 Zeitschritten kollabiert, bleibt sie mit Regeln über mehr als 200 Zeitschritte weitgehend erhalten.
 
 ### Vergleich der Szenarien
 Der Vergleich der beiden Szenarien verdeutlicht den Unterschied zwischen räumlicher Nähe und sozial wirksamer Interaktion. In beiden Simulationen bewegen sich die Fischer*innen nach identischen Bewegungsregeln über das Raster und weisen somit vergleichbare Begegnungswahrscheinlichkeiten auf. Dennoch entwickeln sich die Systeme aufgrund der unterschiedlichen Verhaltensanpassung grundlegend verschieden.
 
-Im Szenario ohne soziale Regeln führt die kontinuierliche Zunahme egoistischen Verhaltens zu einer steigenden Entnahme von Fischen und schließlich zum vollständigen Zusammenbruch der Ressource. Im Szenario mit sozialen Regeln wirken Begegnungen hingegen verhaltensmodifizierend, indem sie egoistische Tendenzen reduzieren und dadurch den Entnahmedruck auf den Fischbestand begrenzen. Dies ermöglicht die langfristige Stabilisierung der Ressource.
+Ohne soziale Regeln führt die kontinuierliche Zunahme egoistischen Verhaltens zu einer raschen Übernutzung der Ressource und einem frühzeitigen Kollaps des Fischbestands. Soziale Regeln reduzieren diesen Effekt erheblich und ermöglichen über lange Zeiträume eine stabile Ressourcennutzung. Die langfristigen Simulationen zeigen jedoch, dass die Regel unter den gegebenen Modellannahmen keine vollständige Nachhaltigkeit gewährleistet, sondern den Zusammenbruch der Ressource vor allem verzögert.
 
-Die Ergebnisse legen somit nahe, dass nicht die räumliche Nähe allein, sondern deren Einfluss auf das Verhalten der Akteur*innen entscheidend für die nachhaltige Nutzung gemeinsam genutzter Ressourcen ist.
+Die Ergebnisse legen somit nahe, dass soziale Interaktion einen wesentlichen Beitrag zur Stabilisierung gemeinsamer Ressourcen leisten kann, ihre langfristige Erhaltung jedoch von zusätzlichen Faktoren abhängen dürfte.
 
 
 ## 4. Discussion, Conclusion and Limitations
@@ -186,7 +210,7 @@ Uns ging es hier nicht nur um den Wert von Begegnung als Verstärker für sozial
 Ein Schwachpunkt ist die extreme Vereinfachung. Das menschliche Verhalten ist sehr vielschichtig und komplex. Kaum etwas lässt sich auf Basis einer einfach-formulierbaren Ursache-Wirkungs-Beziehung beschreiben bzw. erklären. In unserem Modell arbeiten wir mit genau einem Parameter. Und gerade darin zeigt sich auch die starke Limitation der Aussagekraf und die bewusst gewählte Eingrenzung des Modells.
 
 Um es realistischer zu machen, müssten wir unsere starken Vereinfachungen zumindest teilweise wieder zurücknehmen und eine Reihe weiterer Parameter aufnehmen. Außerdem bräuchte es eine eingehendere Betrachtung der Wechselwirkungen und Rückkoppelungen in positiver wie negativer Richtung.  
-
+Die Ergebnisse hängen teilweise von der gewählten Simulationsdauer ab. Während das Szenario mit sozialen Regeln nach 200 Zeitschritten nahezu stabil erscheint, zeigt eine Verlängerung auf 300 Zeitschritte einen verzögerten Ressourcenkollaps. Die Interpretation von Stabilität ist daher stets relativ zum betrachteten Zeithorizont.
 
 ## References
 Hardin, G. (1968). The Tragedy of the Commons. Science, 162(3859), 1243–1248
