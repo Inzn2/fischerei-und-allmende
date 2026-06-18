@@ -226,5 +226,167 @@ Ostrom, E. (1990); Governing the Commons: The evolution of institutions for coll
 Janssen, M.A., Holahan, R., Lee, A., & Ostrom, E. (2010). Lab experiments for the study of social-ecological systems. Science, 328(5978), 613-617.
 
 
-## Appendix A: ODD
+## Appendix A
 
+# ODD - Protokoll Fischerei und Allmende
+
+## 1. Purpose and Patterns
+Was modellieren wir und warum?
+
+Das Modell soll veranschaulichen, unter welchen Bedingungen eine gemeinsam genutzte Ressource, wie ein See mit einem bestimmten Fischbestand, stabil bleibt oder kippt. Konkret geht es uns um das Verhalten der Fischer, das mehr oder weniger gravierende Auswirkungen auf den Fischbestand zeigt. Welche Parameter haben eine hohe Sensitivität für die Stabilität des Fischbestands? 
+Wir erwarten: Je indivividueller das Nutzungsverhalten der Fischer (Gewinnmaximierung des Einzelnen) ist, umso früher kollabiert der Bestand. Je mehr soziales Verhalten, umso stabiler bleibt das System. Soziale Nähe fördert kooperatives Verhalten, während Isolation egoistisches Verhalten begünstigt.
+
+Für uns interessant: 
+- Die Fischer als Individuum und als soziale Gruppe. 
+- Welches Verhalten und welche Verhaltensadaption wirkt destabilisierend/stabilisierend für die gemeinsam genutzte Ressource.
+- Welche Verhaltensbeeinflussenden Parameter wirken besonders sensitiv?
+
+Für uns nicht interessant: 
+- Welcher Fischer ist wie erfolgreich
+- Welche Mechanismen im See wirken beschleunigend oder stabilierend für den Fischbestand (z.B. Diffusion zwischen den Patches)
+
+## 2. Entities, State Variables, and Scales
+Welche Dinge/Elemente gibt es? Was charakterisiert sie?
+
+Fischer
+- Anzahl der Fischer am See (30)
+- Postion der Fischer (Patch)
+- Verhalten der Fischer (von 1/kooperativ bis 9/ego => Faktor bestimmt den Fischfang: 1 bis 9 Fische pro Zeitschritt)
+- Nähe/Distanz zu anderen Fischern (beeinflusst das Verhalten)
+Auf Saktionierung/Bestrafung bzw. Belohnung wird im Modell verzichtet. 
+
+Fische
+- Anzahl im See (Patch für Fischbestand nicht wichtig.)
+- Maximale Kapazität im See (5000)
+- Minimumbestand (0)
+- Regenerationsrate (3,66% pro Zeitschritt bis zur Maximalgrenze)
+
+Patches (See als Gitter dargestellt. Räumliches Raster für Position der Fischer*innen)
+- Anzahl Patches (20x20)
+- Koordinaten der Patches (Wird benötigt für Position der Fischer*innen und die Grenzen des Sees)
+Max. Kapazität an Fischen pro Patch nicht wichtig.
+Diffusion zwischen Patches wird nicht betrachtet.
+
+- Simulationsdauer: Die Simulation läuft standardmäßig über 200 Zeitschritte. 
+
+## 3. Prozess Overview and Scheduling (Zeitplan)
+Was tun die Entitäten in welcher Reihenfolge?
+
+Pro Zeitschritt passiert folgendes:
+Schritt 1: Fischer*innen fischen (auf Basis der hinterlegten Verhaltensregel je Fischer*in) und darauf aufbauend wird der neue Fischbestand im See gespeichert.
+Schritt 2: Die Verhaltensregel bei den Fischern wird adaptiert (auf Basis Nähe/Distanz). 
+Schritt 3: Fischer wechseln den Patch (ein Patch weiter auf Basis "Zufall")
+Schritt 4: Fische regeneriern sich.
+
+## 4. Design Concepts
+# 4.1 Basic Principles
+Welche Theorien oder Hypothesen liegen dem Modell zugrunde?
+
+Das Modell basiert auf der Common-Pool-Theory. Die zentrale Frage die sich dieses Modell stellt lautet ob nicht nur Ressourcen sondern auch soziale Regelstrukturen den Ausgang bestimmen.
+
+# 4.2 Emergence
+Welche Ergebnisse entstehen aus dem Verhalten der Agenten, welche sind durch Regeln erzwungen?
+
+In diesem Modell können verschiedene Makro Muster entstehen wie der Kollaps des Fischbestandes, Dominanz einzelner Strategien und die Durchsetzung von sozialen Verhaltensregeln.
+
+# 4.3 Adaptation
+Welche Entscheidungen treffen die Agenten? Wie reagieren sie auf Veränderungen?
+
+Treffen Fischerìnnen auf mindestens eine Person in ihrer Moore-Nachbarschaft, wird ihr Verhaltenswert um 1 reduziert (kooperativer). Bei Isolation erhöht sich der Verhaltenswert um 1 (egoistischer) 
+Isolation führt zum Schrittweisen Abbau von sozialem hin zu egoistischem Verhalten.
+
+# 4.4 Objectives
+Was optimieren die Agenten?
+
+Jeder Fischer verfolgt primär das Ziel, Fische zu fangen - die Menge steuert seine hinterlegte Verhaltensregel. Isolation führt zur Gewinnmaximierung. Nähe optimiert das Verhalten in Bezug soziale Angleichung um Verhaltenswert -1. 
+
+# 4.5 Learning
+Ändern Agenten ihre Entscheidungsregeln über die Zeit?
+
+Die Agenten ändern ihr Verhalten auf Basis von Nähe und Distanz. 
+Isolation: Sie lernen von sich selbst (Je egoistischer, umso mehr Ertrag)
+Nähe (Fischer*innen treffen sich in benachbarten Feldern): Sie lernen von/orientieren sich an benachbarten Fischer*innen
+
+# 4.5 Prediction
+Wie antizipieren Agenten zukünftige Zustände?
+-
+
+# 4.6 Sensing
+Was können Agenten über ihre Umgebung und andere Agenten wahrnehmen? Über welche Distanz?
+
+Die Wahrnehmung ist lokal auf benachbarte Zellen (Moore-Nachbarschaft) beschränkt. Wenn sie sich auf unmittelbaren Nachbarfeldern begegnen, nehmen sie das Fischverhalten des/der anderen wahr. Treffen Fischerìnnen auf mindestens einen anderen Fischer*in in ihrer Moore-Nachbarschaft, wird ihr Verhaltenswert um 1 reduziert (kooperativer).
+
+# 4.7 Interaction
+Wie beeinflussen sich Agenten gegenseitig?
+
+Über Nähe/Distanz: Treffen Fischerìnnen auf mindestens eine Person in ihrer Moore-Nachbarschaft, wird ihr Verhaltenswert um 1 reduziert (kooperativer).
+
+# 4.8 Stochasticity
+Wo und warum wird Zufall verwendet?
+
+Zufall wird verwendet bei:
+- Initialisierung: Verhaltensregeln den einzelnen Fischern zuordnen. 
+- Initialisierung: Startpositionen der Fischer auf dem See (Patches) fixieren.
+Basis dafür sind einstellbare Durchschnittswerte für das Verhalten aller Fischer (z.B. ego/sozial zw. 1 und 9) und Nähe/Distanz-Verhältnis
+Ein Random Seed wird gesetzt, um Reproduzierbarkeit zu gewährleisten.
+
+# 4.9 Collectives
+Gibt es Gruppen von Agenten, die als Einheit handeln?
+-
+
+# 4.10 Observation
+Welche Outputs brauchen wir, um das Modell gegen unsere Patterns zu testen?
+
+Wichtige Outputgrößen:
+- Gesamtfischbestand über Zeit
+- Anteil der jeweiligen Verhaltensstrategien, bei der der Fischbestand kippt
+
+## 5. Initialization
+Wie wird das Modell gestartet?
+
+Der See wird als 20x20 Gitter initialisiert (x,y-Koordinatensystem)
+
+Der See:
+- Maximale Kapazität, max_capacity_lake= 5000
+- Minimale Kapazität (Kipppunkt), min_capacity_lake= 0
+- Regenerationsrate Fischbestand, regen_rate=0,366 (3,66%) bis max_capacity
+
+Fische im See: 
+- Anfangsbestand, fish_stock=5000
+
+Fischer:
+- Anzahl der Fischer am See: fisherman=50
+- Postion der Fischer (Patch): position_f= (x,y-Koordinaten), zufallsverteilt (von 0-1, 0 bedeutet alle starten isoliert, 1 bedeutet alle starten als Gruppe in direkter Moore-Nachbarschaft)
+- Alle Fischer*innen starten mit Verhalten = 1 
+- Verhalten der Fischer: behavefactor_gr= 1
+behavefactor_f1=... (von 1/kooperativ bis 9/ego. Der Faktor bestimmt den Fischfang: bei behavefactor_f=1 wird 1 Fisch pro Zeitschritt gefangen / bei behavefactor_f=9 werden 9 Fische pro Zeitschritt gefangen / gleiches Prinzip für 2-8)
+
+Random Seed wird gesetzt.
+
+## 6. Input Data
+Welche externen Daten fließen ein?
+
+Externe, zeitabhängige Daten sind im Basismodell nicht erforderlich.
+
+## 7. Submodels
+Wie funktioniert jeder Prozess im Detail?
+
+Schritt 1: Fischer fischen.
+Am Beginn jedes Zeitschritts fischen die Fischer*innen auf Basis der jeweils hinterlegten Verhaltensregel je Fischer*in.
+fishing_f1 = ...
+Neuer Fischbestand im See wird gespeichert: fish_stock = fish_stock - fishing_f1 - ...
+Kipppunkt-Abgleich: Wenn fish_stock < min_capacity_lake, dann bricht die Animation ab = Spielstopp
+
+Schritt 2: Die Verhaltensregel bei den Fischern wird adaptiert. 
+Hat ein Fischer keinen anderen Fischer auf einem Nachbarpatch: 
+behavefactor_f = behavefactor + 1 (er wird egoistischer). Bis max. 9 möglich.
+
+Treffen Fischer*ìnnen auf mindestens einen Nachbarn in ihrer Moore-Nachbarschaft, wird ihr Verhaltenswert um 1 reduziert (kooperativer).
+
+Schritt 3: Fischer wechseln den Patch: 
+Ein Patch weiter. Maximal 8 Nachbarfelder zur Auswahl (außer an den Rändern des Sees). Zufallsgeneriert
+
+
+Schritt 4: Fische regeneriern sich.
+Am Ende jedes Zeitschritts regeneriert sich der Fischbestand um den Regenerationsfaktor 0,366 bis maximal zur Kapazitätsgrenze (max 5000):
+fish_stock = fish_stock + fish_stock*regen_rate
